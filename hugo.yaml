@@ -1,0 +1,49 @@
+#基础配置
+baseURL: "https://blog.libaicn.com"#站点地址
+title: "李白的博客"#站点标题
+languageCode: "zh" # 语 言 编 码 (如 简 体 中 文 : zh)
+DefaultContentLanguage: "zh"
+hasCJKLanguage: true  # 检 测  CJK
+paginate: 6           # 每 个 分 页 文 章 数
+paginatePath: "page"
+permalinks:           # 永 久 连 结 格 式
+        post: /:slug/
+        page: /:filename/
+theme: "PaperMod"#使用的主题
+enableInlineShortcodes: true # 短 代 码 支 持
+enableRobotsTXT: true # 启 用  Robots.txt
+buildDrafts: false #不生成标记为草稿的文章
+buildFuture: false
+buildExpired: false
+enableEmoji: true
+enableGitInfo: true
+pygmentsUseClasses: true
+
+#高级配置
+outputs:
+        home:
+                - HTML
+                - JSON
+                - RSS 
+params:
+        ShowFullTextinRSS: true #启用 RSS
+        env: production
+        defaultTheme: auto
+        disableScrollToTop: false
+        ShowWordCount: true
+        ShowShareButtons: true
+        ShareButtons: ['telegram'] #显示分享按钮 可选 twitter, linkedin, reddit, facebook, whatsapp, telegram
+        socialIcons: #社交平台小图标 支持列表 https://adityatelange.github.io/hugo-PaperMod/posts/papermod/papermod-icons/
+                - name: 'github'
+                  url: https://github.com/libaicn
+                - name: 'telegram'
+                  url: https://t.me/xxx
+                - name: 'email'
+                  url: mailto:libaixianren1314@gmail.com
+                - name: 'rss'
+                  url: https://www.xxx.moe/index.xml
+                - name: 'pgp'
+                  url: https://pgp.xxx.moe/
+        homeInfoParams:
+                Title: "Hi there \U0001F44B" #博客主页上的大标题
+                Content: I am **李白仙人**. Welcome to my personal blog! Here I share my **thoughts**, **opinions** and **life journal** #博客主页上的介绍
