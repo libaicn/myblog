@@ -1,3 +1,5 @@
 baseURL = 'https://blog.libaicn.com/'
 languageCode = 'en-us'
 title = '李白的博客'
+
+theme="PaperMod"
