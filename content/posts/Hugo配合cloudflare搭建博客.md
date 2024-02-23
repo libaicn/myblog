@@ -1,7 +1,7 @@
 +++
 title = 'Hugo配合cloudflare搭建博客'
 date = 2024-02-23T20:52:39+08:00
-draft = true
+draft = false
 +++
 
 折腾了一天hugo搭建博客, 写一篇文章用以记录.
