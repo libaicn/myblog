@@ -1,7 +1,7 @@
 +++
 title = 'RPM方式安装MySQL'
 date = 2024-02-23T16:14:54+08:00
-draft = true
+draft = false
 +++
 
 # RPM方式安装MySQL

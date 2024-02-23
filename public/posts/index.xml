@@ -1,1 +1,96 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on 李白的博客</title><link>https://blog.libaicn.com/posts/</link><description>Recent content in Posts on 李白的博客</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate/><atom:link href="https://blog.libaicn.com/posts/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on 李白的博客</title>
+    <link>https://blog.libaicn.com/posts/</link>
+    <description>Recent content in Posts on 李白的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh</language>
+    <lastBuildDate>Fri, 23 Feb 2024 16:14:54 +0800</lastBuildDate>
+    <atom:link href="https://blog.libaicn.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>RPM方式安装MySQL</title>
+      <link>https://blog.libaicn.com/posts/rpm%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85mysql/</link>
+      <pubDate>Fri, 23 Feb 2024 16:14:54 +0800</pubDate>
+      <guid>https://blog.libaicn.com/posts/rpm%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85mysql/</guid>
+      <description>RPM方式安装MySQL 最近浪子尝试使用mycat做MySQL的读写分离和分表分库, 因此搭建了几台虚拟机来做操作.话不多说,我们现在cent</description>
+      <content:encoded><![CDATA[<h1 id="rpm方式安装mysql">RPM方式安装MySQL</h1>
+<p>最近浪子尝试使用mycat做MySQL的读写分离和分表分库, 因此搭建了几台虚拟机来做操作.话不多说,我们现在centos7上安装MySQL.</p>
+<p>据说centos7上面直接用<code>yum</code>的方式安装MySQL会失败,那么我就直接使用手动的方式安装.</p>
+<h3 id="下载需要的安装包">下载需要的安装包</h3>
+<p>我选择的是国内的华为镜像, 速度比较快一些. 分别下载 <code>common</code> <code>libs</code> <code>client</code> <code>server</code> 4个RPM包.安装的MySQL版本可以在<a href="https://mirrors.huaweicloud.com/mysql/Downloads/MySQL-5.7/">华为镜像</a>里面自己选择,我选择的MySQL5.7.</p>
+<pre tabindex="0"><code>wget https://mirrors.huaweicloud.com/mysql/Downloads/MySQL-5.7/mysql-community-common-5.7.30-1.el6.i686.rpm
+
+wget https://mirrors.huaweicloud.com/mysql/Downloads/MySQL-5.7/mysql-community-libs-5.7.30-1.el6.x86_64.rpm
+
+wget https://mirrors.huaweicloud.com/mysql/Downloads/MySQL-5.7/mysql-community-client-5.7.30-1.el6.x86_64.rpm
+
+wget https://mirrors.huaweicloud.com/mysql/Downloads/MySQL-5.7/mysql-community-server-5.7.30-1.el6.x86_64.rpm
+</code></pre><h3 id="按照顺序安装4个rpm包">按照顺序安装4个RPM包</h3>
+<p>记住,一点要按照顺序安装,因为包于包之间有依赖关系.</p>
+<pre tabindex="0"><code>rpm -ivh mysql-community-libs-5.7.30-1.el6.x86_64.rpm --force --nodeps
+
+rpm -ivh mysql-community-client-5.7.30-1.el6.x86_64.rpm  --force --nodeps
+
+rpm -ivh mysql-community-client-5.7.30-1.el6.x86_64.rpm  --force --nodeps
+
+rpm -ivh mysql-community-server-5.7.30-1.el6.x86_64.rpm --force --nodeps
+</code></pre><p>我在安装的时候, 最开始没有加上参数<code>--force --nodeps</code> ,然后会安装失败,会有类似于这样的错误:</p>
+<pre tabindex="0"><code>[root@localhost mysql]# rpm -ivh mysql-community-libs-5.7.30-1.el6.x86_64.rpm
+警告：mysql-community-libs-5.7.30-1.el6.x86_64.rpm: 头V3 DSA/SHA1 Signature, 密钥 ID 5072e1f5: NOKEY
+错误：依赖检测失败：
+	mysql-community-common(x86-64) &gt;= 5.7.9 被 mysql-community-libs-5.7.30-1.el6.x86_64 需要
+</code></pre><p><img loading="lazy" src="/Users/shadow/Pictures/typora/image-20201224130527553.png" alt="image-20201224130527553"  />
+</p>
+<p>所以推荐安装时加上依赖.</p>
+<h3 id="启动mysql">启动MySQL</h3>
+<pre tabindex="0"><code>service mysqld start
+</code></pre><h3 id="修改初始密码">修改初始密码</h3>
+<p>默认安装好MySQL后,密码会在日志里面记录.可以通过这条命令查看初始密码:</p>
+<pre tabindex="0"><code>cat /var/log/mysqld.log |grep password
+</code></pre><p>你看到的内容类似于下面这样:</p>
+<p><img loading="lazy" src="/Users/shadow/Pictures/typora/image-20201224130826392.png" alt="image-20201224130826392"  />
+</p>
+<h4 id="登录mysql">登录MySQL</h4>
+<p>通过下面的命令登录MySQL:</p>
+<pre tabindex="0"><code>mysql -uroot -p 
+</code></pre><p>输入上面找到的密码.</p>
+<h4 id="修改root登录密码">修改root登录密码</h4>
+<p>可以在登录MySQL后,用一下命令修改登录密码:</p>
+<pre tabindex="0"><code>set password = password(&#39;123456&#39;);
+# 刷新权限
+flush privileges;
+</code></pre><blockquote>
+<p>有的时候会这个命令会执行失败,是因为你设置的密码过于简单.可以通过2种方式解决:(正式环境推荐使用复杂的密码)</p>
+<ol>
+<li>
+<p>设置一个很复杂的密码</p>
+</li>
+<li>
+<p>降低密码的校验强度,使用一些命令:</p>
+<pre tabindex="0"><code># 设置密码校验强度为最低级别,
+set global validate_password_policy=0;
+# 设置密码长度最少为4个字符
+set global validate_password_length=4;
+# 刷新权限
+flush privileges;
+# 然后在执行上面的设置密码命令
+</code></pre></li>
+</ol>
+</blockquote>
+<p>到此为止,我们的MySQL就安装成功啦~ enjoy it~</p>
+]]></content:encoded>
+    </item>
+    <item>
+      <title>Hello_world</title>
+      <link>https://blog.libaicn.com/posts/hello_world/</link>
+      <pubDate>Fri, 23 Feb 2024 13:45:11 +0800</pubDate>
+      <guid>https://blog.libaicn.com/posts/hello_world/</guid>
+      <description>简介 这是 粗体 文本，这是 斜体 文本。 访问 Hugo 网站！</description>
+      <content:encoded><![CDATA[<h2 id="简介">简介</h2>
+<p>这是 <strong>粗体</strong> 文本，这是 <em>斜体</em> 文本。</p>
+<p>访问 <a href="https://gohugo.io">Hugo</a> 网站！</p>
+]]></content:encoded>
+    </item>
+  </channel>
+</rss>
