@@ -2,17 +2,144 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>李白的博客</title>
-    <link>https://blog.libaicn.com/</link>
+    <link>http://localhost:1313/</link>
     <description>Recent content on 李白的博客</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh</language>
-    <lastBuildDate>Fri, 23 Feb 2024 16:14:54 +0800</lastBuildDate>
-    <atom:link href="https://blog.libaicn.com/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 23 Feb 2024 20:52:39 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Hugo配合cloudflare搭建博客</title>
+      <link>http://localhost:1313/posts/hugo%E9%85%8D%E5%90%88cloudflare%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</link>
+      <pubDate>Fri, 23 Feb 2024 20:52:39 +0800</pubDate>
+      <guid>http://localhost:1313/posts/hugo%E9%85%8D%E5%90%88cloudflare%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</guid>
+      <description>折腾了一天hugo搭建博客, 写一篇文章用以记录. hugo安装 在Mac下直接使用brew安装(其他系统可以在官网按照系统安装: brew install hugo Hugo设</description>
+      <content:encoded><![CDATA[<p>折腾了一天hugo搭建博客, 写一篇文章用以记录.</p>
+<h3 id="hugo安装">hugo安装</h3>
+<p>在Mac下直接使用brew安装(其他系统可以在<a href="https://gohugo.io/installation/">官网</a>按照系统安装:</p>
+<p><code>brew install hugo</code></p>
+<h3 id="hugo设置">Hugo设置</h3>
+<ol>
+<li>
+<p>创建站点</p>
+<p>创建站点就是创建博客的工作目录</p>
+<p><code>hugo new site /path/to/site</code></p>
+<p>然后进入目录:</p>
+<p><code>cd /path/to/site</code></p>
+</li>
+<li>
+<p>创建第一篇博客</p>
+<p><code>hugo new posts/hello_world.md</code></p>
+<p>第一篇博客就创建好了, 格式如下:</p>
+<pre tabindex="0"><code>+++
+title = &#39;Hello_world&#39;
+date = 2024-02-23T13:45:11+08:00
+draft = true
++++
+
+### 正文内容
+1. aaa
+2. bbb
+3. ccc
+</code></pre></li>
+</ol>
+<p>+++之间的内容是toml格式, 你也可以改成yaml格式<code>---</code>或者JSON格式</p>
+<ol start="3">
+<li>
+<p>安装主题</p>
+<p>这里我推荐的是<a href="https://github.com/adityatelange/hugo-PaperMod/">PaperMod</a></p>
+<p>安装命令:</p>
+<pre tabindex="0"><code>git submodule add --depth=1 https://github.com/adityatelange/hugo-PaperMod.git themes/PaperMod
+
+git submodule update --init --recursive # needed when you reclone your repo (submodules may not get cloned automatically)
+</code></pre></li>
+<li>
+<p>运行hugo</p>
+<p>该命令需要再hugo根目录执行, 就是第1点创建的目录</p>
+<pre tabindex="0"><code>    hugo server -D
+</code></pre><p>执行后打印日志里面会有访问地址,一般是<code>http://localhost:1313/</code></p>
+</li>
+</ol>
+<h3 id="将博客提交到github">将博客提交到GitHub</h3>
+<p>GitHub账号自备</p>
+<ol>
+<li>
+<p>创建一个新仓库, 我这里叫<code>myblog</code></p>
+</li>
+<li>
+<p>在博客目录是用Git初始化</p>
+<pre tabindex="0"><code>在/path/to/site目录下执行
+git init .
+git remote add origin https://github.com/xxx/myblog.git # 这里是你博客仓库的地址
+git add -A 
+git commit -m &#34;first commit&#34;
+git push -u origin master
+</code></pre></li>
+</ol>
+<h3 id="部署到cloudflare">部署到Cloudflare</h3>
+<p>cloudflare账户需要自己创建.</p>
+<ol>
+<li>
+<p>点击<code>Workers和Pages</code>
+<img loading="lazy" src="https://missuo.ru/file/519a237c20b07b5ddc774.png" alt="1"  />
+</p>
+</li>
+<li>
+<p>点击创建应用程序(如果是第一次应该是有个创建的指引,我记不清了)
+<img loading="lazy" src="https://missuo.ru/file/c50f126378182e189d959.png" alt="2"  />
+</p>
+</li>
+<li>
+<p>点击Pages, 然后点击链接到Git, 选择刚刚创建的厂库, 我这里是<code>myblog</code>
+<img loading="lazy" src="https://missuo.ru/file/57a3ce86830ec81b65d06.png" alt="3"  />
+</p>
+</li>
+<li>
+<p>点击最下面的开始设置, 然后构建设置选hugo
+<img loading="lazy" src="https://missuo.ru/file/04da037c6449774fae6f9.png" alt="4"  />
+</p>
+</li>
+<li>
+<p>点击保存并部署, 至此部署完成</p>
+</li>
+<li>
+<p>部署完成后,会有个xxx.pages.dev的地址,就是cloudflare给你分配的免费地址, 可以点击访问你的博客.
+<img loading="lazy" src="https://missuo.ru/file/eb90780668ac1e2c60916.png" alt="6"  />
+</p>
+</li>
+</ol>
+<h3 id="自定义域名">自定义域名</h3>
+<p>如果你有自己的域名, 可以把自己的域名绑定到站点上面去.</p>
+<ol>
+<li>
+<p>点击自定义域, 输入自己的域名
+<img loading="lazy" src="https://missuo.ru/file/a2b94d2697cb47a7d99de.png" alt="6.1"  />
+</p>
+</li>
+<li>
+<p>我的域名是cloudflare注册的, 自定义域后会自动的在cloudflare网站的DNS下面解析, 如果你的域名在其他服务商, 可能需要自己去做解析
+<img loading="lazy" src="https://missuo.ru/file/be0be9538ffc4df9f2f0f.png" alt="6.2"  />
+</p>
+</li>
+</ol>
+<h3 id="遇到的问题">遇到的问题</h3>
+<p>在cloudflare部署成功后, 我发现网页能打开,但是看不到文章, 查找了半天才明白, 需要将在创建博客文章的时候, 自动生成的toml格式内容的<code>draft</code>设置为false</p>
+<p><img loading="lazy" src="https://missuo.ru/file/f48a0b7e6232a18d14efc.png" alt="7"  />
+</p>
+<h3 id="其他">其他</h3>
+<ul>
+<li><a href="https://juejin.cn/user/2647279733058408">我的掘金</a></li>
+<li>我的公众号
+<img loading="lazy" src="https://missuo.ru/file/a31692d797eec928eacc3.jpg" alt="我的公众号"  />
+</li>
+</ul>
+]]></content:encoded>
+    </item>
     <item>
       <title>RPM方式安装MySQL</title>
-      <link>https://blog.libaicn.com/posts/rpm%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85mysql/</link>
+      <link>http://localhost:1313/posts/rpm%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85mysql/</link>
       <pubDate>Fri, 23 Feb 2024 16:14:54 +0800</pubDate>
-      <guid>https://blog.libaicn.com/posts/rpm%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85mysql/</guid>
+      <guid>http://localhost:1313/posts/rpm%E6%96%B9%E5%BC%8F%E5%AE%89%E8%A3%85mysql/</guid>
       <description>RPM方式安装MySQL 最近浪子尝试使用mycat做MySQL的读写分离和分表分库, 因此搭建了几台虚拟机来做操作.话不多说,我们现在cent</description>
       <content:encoded><![CDATA[<h1 id="rpm方式安装mysql">RPM方式安装MySQL</h1>
 <p>最近浪子尝试使用mycat做MySQL的读写分离和分表分库, 因此搭建了几台虚拟机来做操作.话不多说,我们现在centos7上安装MySQL.</p>
@@ -82,10 +209,17 @@ flush privileges;
 ]]></content:encoded>
     </item>
     <item>
+      <title>About</title>
+      <link>http://localhost:1313/about/</link>
+      <pubDate>Fri, 23 Feb 2024 13:52:25 +0800</pubDate>
+      <guid>http://localhost:1313/about/</guid>
+      <description></description>
+    </item>
+    <item>
       <title>Hello_world</title>
-      <link>https://blog.libaicn.com/posts/hello_world/</link>
+      <link>http://localhost:1313/posts/hello_world/</link>
       <pubDate>Fri, 23 Feb 2024 13:45:11 +0800</pubDate>
-      <guid>https://blog.libaicn.com/posts/hello_world/</guid>
+      <guid>http://localhost:1313/posts/hello_world/</guid>
       <description>简介 这是 粗体 文本，这是 斜体 文本。 访问 Hugo 网站！</description>
       <content:encoded><![CDATA[<h2 id="简介">简介</h2>
 <p>这是 <strong>粗体</strong> 文本，这是 <em>斜体</em> 文本。</p>
